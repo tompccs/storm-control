@@ -19,7 +19,7 @@ import time
 # ----------------------------------------------------------------------------------------
 class HamiltonMVP():
     def __init__(self,
-                 com_port = 2,
+                 com_port = 'COM2',
                  num_simulated_valves = 0,
                  verbose = False):
 

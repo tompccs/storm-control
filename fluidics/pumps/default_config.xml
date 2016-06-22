@@ -34,6 +34,9 @@
      <pump_cmd name = "Stop Flow">
        <pump_config speed = "0.0"></pump_config>
      </pump_cmd>
+     <pump_cmd name = "Extreme Flow">
+      <pump_config speed = "15.0" direction = "Forward"></pump_config>
+     </pump_cmd>
   </pump_commands>
 
   <kilroy_protocols>

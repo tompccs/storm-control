@@ -23,7 +23,7 @@ from hamilton import HamiltonMVP
 class ValveChain(QtGui.QWidget):
     def __init__(self,
                  parent = None,
-                 com_port = 2,
+                 com_port = 'COM2',
                  num_simulated_valves = 0,
                  verbose = False
                  ):
@@ -38,7 +38,7 @@ class ValveChain(QtGui.QWidget):
 
         # Create instance of Hamilton class
         if num_simulated_valves > 0:
-            self.valve_chain = HamiltonMVP(com_port = 0,
+            self.valve_chain = HamiltonMVP(com_port = 'COM0',
                                            num_simulated_valves = num_simulated_valves,
                                            verbose = self.verbose)
         else:

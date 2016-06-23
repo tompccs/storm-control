@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<kilroy_configuration num_valves="16" num_pumps="1">
+	<!--
+		=====================
+		CRUK MERFISH Protocol
+		=====================
+
+		Tom Robbins 2016
+	-->
+	<valve_commands>
+		<!-- === Begin port definitions for Valve 1 (Hamilton 36789, with 8 ports) === -->
+		<valve_cmd name="Hybridisation Stage 1">
+			<valve_pos valve_ID="1" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 2">
+			<valve_pos valve_ID="2" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 3">
+			<valve_pos valve_ID="3" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 4">
+			<valve_pos valve_ID="4" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 5">
+			<valve_pos valve_ID="5" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 6">
+			<valve_pos valve_ID="6" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 7">
+			<valve_pos valve_ID="7" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 8">
+			<valve_pos valve_ID="8" port_ID="1"></valve_pos>
+		</valve_cmd>
+
+		<!-- After switching to the second set of hybridisation solutions, these become active: -->
+		<valve_cmd name="Hybridisation Stage 13">
+			<valve_pos valve_ID="1" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 14">
+			<valve_pos valve_ID="2" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 15">
+			<valve_pos valve_ID="3" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 16">
+			<valve_pos valve_ID="1" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<!-- === End port definitions for Valve 1 === -->
+
+		<!-- === Begin port definitions for Valve 2 === -->
+		<valve_cmd name="Ancillary Valve">
+			<valve_pos valve_ID="2" port_ID="1"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 9">
+			<valve_pos valve_ID="2" port_ID="2"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 10">
+			<valve_pos valve_ID="2" port_ID="3"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 11">
+			<valve_pos valve_ID="1" port_ID="4"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Hybridisation Stage 12">
+			<valve_pos valve_ID="1" port_ID="5"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Wash">
+			<valve_pos valve_ID="1" port_ID="6"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Imaging">
+			<valve_pos valve_ID="1" port_ID="7"></valve_pos>
+		</valve_cmd>
+		<valve_cmd name="Cleavage">
+			<valve_pos valve_ID="1" port_ID="8"></valve_pos>
+		</valve_cmd>
+	</valve_commands>
+	<!-- === End port definitions for Valve 2 === -->
+
+	<pump_commands>
+     	<pump_cmd name = "Normal Flow">
+        	<pump_config speed = "10.0" direction = "Forward"></pump_config>
+     	</pump_cmd>
+     	<pump_cmd name = "Stop Flow">
+       		<pump_config speed = "0.0"></pump_config>
+    	</pump_cmd>
+  	</pump_commands>
+
+
+	<!-- Define the MERFISH protocol -->
+	<kilroy_protocols>
+		<protocol name="MERFISH Stage 1">
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 1</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 2</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 3</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 4</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 5</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 6</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 7</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 8</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Hybridisation Stage 9</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Hybridisation Stage 10</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Hybridisation Stage 11</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Hybridisation Stage 12</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+		</protocol>
+
+		<protocol name="MERFISH Stage 2">
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 13</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 14</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 15</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+
+			<valve duration="0">Ancillary Valve</valve>
+			<valve duration="0">Hybridisation Stage 16</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Wash</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Imaging</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+			<valve duration="0">Cleavage</valve>
+			<pump duration="20">Normal Flow</pump>
+			<pump duration="0">Stop Flow</pump>
+		</protocol>
+	</kilroy_protocols>
+
+</kilroy_configuration>

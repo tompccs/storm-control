@@ -258,6 +258,21 @@
 			<pump duration="20">Normal Flow</pump>
 			<pump duration="0">Stop Flow</pump>
 
+			<!-- 	Notify a responsible person to change the hybridisation 
+					fluids attached to Pump 1 -->
+			<notify>
+				<!-- Send a "warning" email -->
+				<email to="Thomas.Robbins@cruk.cam.ac.uk" subject="It's almost time to change the fluids!">
+					Dear Tom,
+
+					You will need to change the hybridisation fluids soon.
+
+					Kind regards,
+
+					MERFISH
+				</email>
+			</notify>
+
 			<valve duration="0">Hybridisation Stage 11</valve>
 			<pump duration="20">Normal Flow</pump>
 			<pump duration="0">Stop Flow</pump>
@@ -289,6 +304,24 @@
 			<valve duration="0">Wash</valve>
 			<pump duration="20">Normal Flow</pump>
 			<pump duration="0">Stop Flow</pump>
+
+			<notify>
+				<email to="Thomas.Robbins@cruk.cam.ac.uk" subject="It's time to change the fluids!">
+					Dear Tom,
+
+					The first part of the MERFISH protocol is complete. You need to start the second part
+					manually and ensure that the fluids are changed in time.
+					
+					Kind regards,
+
+					MERFISH
+				</email>
+				<popup>
+					The first part of the MERFISH protocol is complete. You need to start the second part
+					manually and ensure that the fluids are changed in time.
+				</popup>
+			</notify>
+
 		</protocol>
 
 		<protocol name="MERFISH Stage 2">

@@ -19,6 +19,7 @@ import xml.etree.ElementTree as elementTree
 from PyQt4 import QtCore, QtGui
 from valves.valveCommands import ValveCommands
 from pumps.pumpCommands import PumpCommands
+from notification import Notification
 
 # ----------------------------------------------------------------------------------------
 # KilroyProtocols Class Definition
@@ -208,6 +209,10 @@ class KilroyProtocols(QtGui.QMainWindow):
             self.issued_command = ["pump", self.pumpCommands.getCommandByName(command_data[1])]
         elif command_data[0] == "valve":
             self.issued_command = ["valve", self.valveCommands.getCommandByName(command_data[1])]
+        elif command_data[0] == "notify":
+            command_duration.execute()
+            self.advanceProtocol()
+            return
         if self.verbose:
             text = "Issued " + command_data[0] + ": " + command_data[1]
             if command_duration > 0:
@@ -330,13 +335,18 @@ class KilroyProtocols(QtGui.QMainWindow):
                 new_protocol_commands = []
                 new_protocol_durations = []
                 for command in protocol: # Get all children
-                    new_protocol_durations.append(int(command.get("duration")))
-                    new_protocol_commands.append([command.tag,command.text]) # [Instrument Type, Command Name]
-                    if (not (command.tag == "pump")) and (not (command.tag == "valve")):
+                    if command.tag == "pump" or command.tag == "valve":
+                        new_protocol_durations.append(int(command.get("duration")))
+                        new_protocol_commands.append([command.tag,command.text]) # [Instrument Type, Command Name]
+                    elif command.tag == "notify":
+                        notification = Notification(command)
+                        new_protocol_durations.append(notification) # hack the duration list to contain the notification
+                                                                    # object for now
+                        new_protocol_commands.append([command.tag, "Notify User"])
+                    else:
                         print "Unknown command tag: " + command.tag
                 self.protocol_commands.append(new_protocol_commands)
                 self.protocol_durations.append(new_protocol_durations)
-
         # Record number of configs
         self.num_protocols = len(self.protocol_names)
 
@@ -522,7 +532,8 @@ class KilroyProtocols(QtGui.QMainWindow):
             text_string += ": "
             text_string += current_protocol_commands[ID][1]
             text_string += ": "
-            text_string += str(current_protocol_durations[ID]) + " s"
+            text_string += str(current_protocol_durations[ID]) \
+                + (" s" if current_protocol_commands[ID][0] != "notify" else "")
 
             wid = QtGui.QListWidgetItem(text_string)
             wid.setFlags(wid.flags() & QtCore.Qt.ItemIsSelectable)

@@ -60,7 +60,7 @@ class Kilroy(QtGui.QMainWindow):
         except SerialException:
             print "Could not connect to devices. Will simulate valves and pumps"
             self.simulate_pump = True
-            self.num_simulated_valves = 16
+            self.num_simulated_valves = 2
             self.connectDevices(parameters)
 
         # Create GUI

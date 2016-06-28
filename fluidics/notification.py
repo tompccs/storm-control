@@ -27,7 +27,8 @@ A class implementing notifications which can be built into protocol .xml files u
 
 import smtplib
 from email.mime.text import MIMEText
-from pyqt4 import 
+from PyQt4.QtGui import QMessageBox
+from PyQt4.QtCore import QCoreApplication
 
 class NotifyParseError(Exception):
 	pass
@@ -44,10 +45,17 @@ def send_email(recipient, subject, content):
 	server.quit()
 
 def make_popup(message):
-	pass
+	# If a Qt application instance exists, display a popup. Otherwise just output to stdout
+	if QCoreApplication.instance() != None:
+		msg = QMessageBox()
+		msg.setText(message)
+		msg.exec_()
+	else:
+		raw_input(message)
+
 
 class NotifyAction():
-	def __init__(self, xml_node, qtwindow = ):
+	def __init__(self, xml_node):
 		if xml_node.tag in ("email", "popup"):
 			self.vector = xml_node.tag
 		else:
@@ -64,7 +72,7 @@ class NotifyAction():
 	def execute(self):
 		if self.vector == "email":
 			send_email(self.recipient, self.subject, self.content)
-		elif self.vector == "popup"
+		elif self.vector == "popup":
 			make_popup(self.content)
 
 class Notification():

@@ -41,7 +41,7 @@ def send_email(recipient, subject, content):
 	message['Subject'] = subject
 
 	server = smtplib.SMTP('localhost')
-	server.sendmail(sender, recipient.split(","), msg.as_string())
+	server.sendmail(sender, recipient.split(","), message.as_string())
 	server.quit()
 
 def make_popup(message):
@@ -59,9 +59,9 @@ class NotifyAction():
 		if xml_node.tag in ("email", "popup"):
 			self.vector = xml_node.tag
 		else:
-			raise NotifyParseError("Tag not supported")
+			raise NotifyParseError("Tag not supported: %s"%xml_node.tag)
 
-		self.content = xml_node.text
+		self.content = xml_node.text.lstrip()
 		if self.vector == "email":
 			try:
 				self.recipient = xml_node.get("to")
@@ -79,13 +79,30 @@ class Notification():
 	def __init__(self, xml_node):
 		self.actions = []
 		for action_node in xml_node:
-			self.actions.append(NotifyAction(xml_node))
+			self.actions.append(NotifyAction(action_node))
+
+	def __str__(self):
+		email_count = 0
+		popup_count = 0
+		for action in self.actions:
+			if action.vector == "email":
+				email_count += 1
+			elif action.vector == "popup":
+				popup_count += 1
+		if email_count > 0 and popup_count == 0:
+			return "send email"
+		elif email_count > 0 and popup_count > 0:
+			return "send email and display popup"
+		elif email_count == 0 and popup_count > 0:
+			return "display popup"
+		elif email_count == 0 and popup_count == 0:
+			return "(do nothing)"
 
 	def execute(self):
 		# We need to run the non-blocking notification(s) first
 		for action in self.actions:
 			if action.vector == "email":
-				action.run()
+				action.execute()
 		for action in self.actions:
 			if action.vector == "popup":
 				action.execute()

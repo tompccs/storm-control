@@ -335,7 +335,7 @@ class KilroyProtocols(QtGui.QMainWindow):
                 new_protocol_commands = []
                 new_protocol_durations = []
                 for command in protocol: # Get all children
-                    if command.tag == "pump" or command.tag == "value":
+                    if command.tag == "pump" or command.tag == "valve":
                         new_protocol_durations.append(int(command.get("duration")))
                         new_protocol_commands.append([command.tag,command.text]) # [Instrument Type, Command Name]
                     elif command.tag == "notify":
@@ -532,7 +532,8 @@ class KilroyProtocols(QtGui.QMainWindow):
             text_string += ": "
             text_string += current_protocol_commands[ID][1]
             text_string += ": "
-            text_string += str(current_protocol_durations[ID]) + " s"
+            text_string += str(current_protocol_durations[ID]) \
+                + (" s" if current_protocol_commands[ID][0] != "notify" else "")
 
             wid = QtGui.QListWidgetItem(text_string)
             wid.setFlags(wid.flags() & QtCore.Qt.ItemIsSelectable)

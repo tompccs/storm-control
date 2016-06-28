@@ -20,6 +20,7 @@ from pumps.pumpControl import PumpControl
 from kilroyProtocols import KilroyProtocols
 from sc_library.tcpServer import TCPServer
 import sc_library.parameters as params
+from serial import SerialException
 
 # ----------------------------------------------------------------------------------------
 # Kilroy Class Definition
@@ -54,6 +55,18 @@ class Kilroy(QtGui.QMainWindow):
         # Define additional internal attributes
         self.received_message = None
         
+        try:
+            self.connectDevices(parameters)
+        except SerialException:
+            print "Could not connect to devices. Will simulate valves and pumps"
+            self.simulate_pump = True
+            self.num_simulated_valves = 16
+            self.connectDevices(parameters)
+
+        # Create GUI
+        self.createGUI()
+
+    def connectDevices(self, parameters):
         # Create ValveChain instance
         self.valveChain = ValveChain(com_port = self.valve_com_port,
                                      num_simulated_valves = self.num_simulated_valves,
@@ -78,8 +91,6 @@ class Kilroy(QtGui.QMainWindow):
         
         self.tcpServer.messageReceived.connect(self.handleTCPData)
 
-        # Create GUI
-        self.createGUI()
 
     # ----------------------------------------------------------------------------------------
     # Close
@@ -180,7 +191,10 @@ class StandAlone(QtGui.QMainWindow):
         self.setCentralWidget(self.centralWidget)
 
         # set window title
-        self.setWindowTitle("Kilroy")
+        if self.kilroy.num_simulated_valves > 0 or self.kilroy.simulate_pump:
+            self.setWindowTitle("Kilroy [SIMULATION MODE]")
+        else:
+            self.setWindowTitle("Kilroy")
 
         # set window geometry
         self.setGeometry(50, 50, 1200, 800)

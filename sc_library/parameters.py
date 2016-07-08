@@ -781,18 +781,28 @@ class StormXMLObject(object):
         else:
             self.addParameter(pname, pvalue)
 
+    def paramOf(self,parameter,pname=None):
+        if isinstance(parameter, Parameter):
+            return parameter
+        elif pname != None:
+            return ParameterSimple(pname, parameter)
+        else:
+            raise ParametersException("Incorrect use of paramOf")
+
     ## addParameter
     #
     # Handles adding Parameters.
     #
     def addParameter(self, pname, pvalue):
         if pname in self.parameters:
-            raise ParametersException("Parameter " + pname + " already exists.")
-        else:
-            if isinstance(pvalue, Parameter):
-                self.parameters[pname] = pvalue
+            if isinstance(self.parameters[pname],list):
+                self.parameters[pname].append(self.paramOf(pvalue,pname))
             else:
-                self.parameters[pname] = ParameterSimple(pname, pvalue)
+                temp = self.parameters[pname]
+                self.parameters[pname] = [temp,self.paramOf(pvalue,pname)]
+        else:
+            self.parameters[pname] = self.paramOf(pvalue,pname=pname)
+
 
     ## addSubSection
     #
@@ -847,6 +857,8 @@ class StormXMLObject(object):
         else:
             if isinstance(prop, StormXMLObject):
                 return prop
+            elif isinstance(prop, list):
+                return [item.getv() for item in prop]
             else:
                 return prop.getv()
 
@@ -870,7 +882,7 @@ class StormXMLObject(object):
             #print pnames, type(xml_object)
             return xml_object.getp(".".join(pnames[1:]))
 
-        if pname in self.parameters:
+        elif pname in self.parameters:
             return self.parameters[pname]
         else:
             raise ParametersExceptionGet("Requested property " + pname + " not found")

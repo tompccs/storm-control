@@ -68,7 +68,7 @@ class Kilroy(QtGui.QMainWindow):
 
     def connectDevices(self, parameters):
         # Create ValveChain instance
-        self.valveChain = ValveChain(com_port = self.valve_com_port,
+        self.valveChain = ValveChain(com_ports = self.valve_com_port,
                                      num_simulated_valves = self.num_simulated_valves,
                                      verbose = self.verbose)
 

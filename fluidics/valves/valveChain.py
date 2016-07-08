@@ -23,7 +23,7 @@ from hamilton import HamiltonMVP
 class ValveChain(QtGui.QWidget):
     def __init__(self,
                  parent = None,
-                 com_port = 'COM2',
+                 com_ports = ['COM2',],
                  num_simulated_valves = 0,
                  verbose = False
                  ):
@@ -32,21 +32,25 @@ class ValveChain(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
 
         # Define local attributes
-        self.com_port = com_port
+        self.com_ports = com_ports
         self.verbose = verbose
         self.poll_time = 2000
 
         # Create instance of Hamilton class
         if num_simulated_valves > 0:
-            self.valve_chain = HamiltonMVP(com_port = 'COM0',
-                                           num_simulated_valves = num_simulated_valves,
-                                           verbose = self.verbose)
+            self.valve_chain = []
+            for i in xrange(num_simulated_valves):
+                self.valve_chain = HamiltonMVP(com_port = 'COM0',
+                                               num_simulated_valves = 1,
+                                               verbose = self.verbose)
         else:
-            self.valve_chain = HamiltonMVP(com_port = self.com_port,
-                                           verbose = self.verbose)
+            self.valve_chain = []
+            for port in self.com_ports:
+                self.valve_chain.append(HamiltonMVP(com_port = port,
+                                           verbose = self.verbose))
 
         # Create QtValveControl widgets for each valve in the chain
-        self.num_valves = self.valve_chain.howManyValves()
+        self.num_valves = len(self.valve_chain)
         self.valve_names = []
         self.valve_widgets = []
         
@@ -73,9 +77,9 @@ class ValveChain(QtGui.QWidget):
             text_string += " Direction " + str(rotation_direction)
             print text_string 
         
-        self.valve_chain.changePort(valve_ID = valve_ID,
-                                    port_ID = port_ID,
-                                    direction = rotation_direction)
+        self.valve_chain[valve_ID].changePort(valve_ID = 0,
+                                        port_ID = port_ID,
+                                        direction = rotation_direction)
         # Update valve display
         self.pollValveStatus()
 
@@ -100,10 +104,10 @@ class ValveChain(QtGui.QWidget):
                                          ID = valve_ID)
             self.valve_names.append(str(valve_ID + 1)) # Save valve name
             valve_widget.setValveName("Valve " + str(valve_ID+1)) # Valve names are +1 valve IDs
-            valve_widget.setValveConfiguration(self.valve_chain.howIsValveConfigured(valve_ID))
-            valve_widget.setPortNames(self.valve_chain.getDefaultPortNames(valve_ID))
-            valve_widget.setRotationDirections(self.valve_chain.getRotationDirections(valve_ID))
-            valve_widget.setStatus(self.valve_chain.getStatus(valve_ID))
+            valve_widget.setValveConfiguration(self.valve_chain[valve_ID].howIsValveConfigured(0))
+            valve_widget.setPortNames(self.valve_chain[valve_ID].getDefaultPortNames(0))
+            valve_widget.setRotationDirections(self.valve_chain[valve_ID].getRotationDirections(0))
+            valve_widget.setStatus(self.valve_chain[valve_ID].getStatus(0))
 
             valve_widget.change_port_signal.connect(self.changeValvePosition)
 
@@ -127,14 +131,14 @@ class ValveChain(QtGui.QWidget):
     # Determine number of valves
     # ------------------------------------------------------------------------------------
     def howManyValves(self):
-        return self.valve_chain.howManyValves
+        return len(self.valve_chain)
 
     # ------------------------------------------------------------------------------------
     # Update valve status display with the current status each valve in the chain
     # ------------------------------------------------------------------------------------
     def pollValveStatus(self):
         for valve_ID in range(self.num_valves):
-            self.valve_widgets[valve_ID].setStatus(self.valve_chain.getStatus(valve_ID))
+            self.valve_widgets[valve_ID].setStatus(self.valve_chain[valve_ID].getStatus(0))
 
     # ------------------------------------------------------------------------------------
     # Change port status based on external command
@@ -148,7 +152,8 @@ class ValveChain(QtGui.QWidget):
     # Reinitialize the valve chain
     # ------------------------------------------------------------------------------------          
     def reinitializeChain(self):
-        self.valve_chain.resetChain()
+        for valve in self.valve_chain:
+            valve.resetChain()
 
     # ------------------------------------------------------------------------------------
     # Set enabled status for display items
@@ -165,14 +170,14 @@ class StandAlone(QtGui.QMainWindow):
         super(StandAlone, self).__init__(parent)
 
         # scroll area widget contents - layout
-        self.valve_chain = ValveChain(COM_port = 2,
+        self.valve_chain = [ValveChain(COM_port = 2,
                                       verbose = True,
-                                      num_simulated_valves = 2)
+                                      num_simulated_valves = 2),]
         
         # central widget
         self.centralWidget = QtGui.QWidget()
         self.mainLayout = QtGui.QVBoxLayout(self.centralWidget)
-        self.mainLayout.addWidget(self.valve_chain.mainWidget)
+        self.mainLayout.addWidget(self.valve_chain[0].mainWidget)
         
         # set central widget
         self.setCentralWidget(self.centralWidget)
@@ -181,7 +186,7 @@ class StandAlone(QtGui.QMainWindow):
         self.setWindowTitle("Valve Chain Control")
 
         # set window geometry
-        self.setGeometry(50, 50, 500, 100 + 100*self.valve_chain.num_valves)
+        self.setGeometry(50, 50, 500, 100 + 100*len(self.valve_chain))
 
         # Create file menu
         menubar = self.menuBar()
@@ -197,7 +202,8 @@ class StandAlone(QtGui.QMainWindow):
     # Detect close event
     # ------------------------------------------------------------------------------------    
     def closeEvent(self, event):
-        self.valve_chain.close()
+        for valve in self.valve_chain:
+            valve.close()
         self.close()
 
 # ----------------------------------------------------------------------------------------

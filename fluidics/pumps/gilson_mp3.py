@@ -36,8 +36,8 @@ class APump():
         self.serial = serial.Serial(port = self.com_port, 
                 baudrate = 19200, 
                 parity= serial.PARITY_EVEN, 
-                bytesize=serial.EIGHTBITS, 
-                stopbits=serial.STOPBITS_TWO, 
+                bytesize=serial.SEVENBITS, 
+                stopbits=serial.STOPBITS_ONE, 
                 timeout=0.1)
 
         # Define initial pump status
@@ -45,8 +45,6 @@ class APump():
         self.speed = 0.0
         self.direction = "Forward"
         
-        self.disconnect()
-        self.enableRemoteControl(1)
         self.startFlow(self.speed, self.direction)
         self.identification = self.getIdentification()
 
@@ -63,7 +61,7 @@ class APump():
         return self.sendImmediate(self.pump_ID, "R")
 
     def getStatus(self):
-        message = self.readDisplay()
+        message = self.readDisplay().decode('ascii')
 
         if self.flip_flow_direction:
             direction = {" ": "Not Running", "-": "Forward", "+": "Reverse"}.\
@@ -77,8 +75,8 @@ class APump():
         control = {"K": "Keypad", "R": "Remote"}.get(message[-1], "Unknown")
 
         auto_start = "Disabled"
-
-        speed = float(message[1:len(message) - 1])
+        print message
+        speed = float(message[1:])
 
         return (status, speed, direction, control, auto_start, "No Error")
 
@@ -100,7 +98,7 @@ class APump():
     def setSpeed(self, rotation_speed):
         if rotation_speed >= 0 and rotation_speed <= 48:
             rotation_int = int(rotation_speed*100)
-            self.sendBuffered(self.pump_ID, "R" + ("%04d" % rotation_int))
+            self.sendBuffered(self.pump_ID, "S" + ("%04d" % rotation_int))
 
     def startFlow(self, speed, direction = "Forward"):
         self.setSpeed(speed)
@@ -131,8 +129,9 @@ class APump():
         self.disconnect()
 
     def disconnect(self):
-        self.sendAndAcknowledge('\xff')
-
+        #self.sendAndAcknowledge('\xff')
+        pass
+    
     def selectUnit(self, unitNumber):
         devSelect = chr(0x80 | unitNumber)
         self.sendString(devSelect) 
